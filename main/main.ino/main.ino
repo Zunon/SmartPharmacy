@@ -22,7 +22,40 @@
 #define YELLOW_PIN 5
 #define GREEN_PIN 4
 
-RFID rfid(SS_PIN,RST_PIN);
+RFID rfid(SS_PIN, RST_PIN);
+
+unsigned char allowedUsers[][5] = {
+  {229, 137, 26, 188, 202},
+  {224, 195, 29, 24, 38},
+  {147, 244, 128, 203, 44}
+};
+
+void outputSerNum(unsigned char serNum[5]) {
+  Serial.print(serNum[0]);
+  Serial.print(" ");
+  Serial.print(serNum[1]);
+  Serial.print(" ");
+  Serial.print(serNum[2]);
+  Serial.print(" ");
+  Serial.print(serNum[3]);
+  Serial.print(" ");
+  Serial.print(serNum[4]);
+  Serial.println("");
+}
+
+bool authenticate(unsigned char serNum[5]) {
+  bool allowed = true;
+  for (int i = 0; i < 2; i++) {
+    allowed = true;
+      for (int j = 0; j < 5; j++) {
+        if (rfid.serNum[j] != allowedUsers[i][j]) {
+          allowed = false;
+        }
+      }
+      if (allowed) return true;
+    }
+  return false;
+}
 
 void setup(){
 
@@ -34,17 +67,8 @@ void setup(){
 
   void loop(){
 
-  if(rfid.isCard() && rfid.readCardSerial()){
-    Serial.print(rfid.serNum[0]);
-    Serial.print(" ");
-    Serial.print(rfid.serNum[1]);
-    Serial.print(" ");
-    Serial.print(rfid.serNum[2]);
-    Serial.print(" ");
-    Serial.print(rfid.serNum[3]);
-    Serial.print(" ");
-    Serial.print(rfid.serNum[4]);
-    Serial.println("");
+  if (rfid.isCard() && rfid.readCardSerial()){
+    outputSerNum(rfid.serNum);
   }
   rfid.halt();
 
