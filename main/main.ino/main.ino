@@ -85,19 +85,27 @@ void loop() {
     if (user != -1) {
       if (medicines[user][0]) {
         Serial.println("Dispensing Blue Panadol...");
-        delay(3000);
+        blue.write(180);
+        delay(2000);
+        blue.write(90);
       }
       if (medicines[user][1]) {
         Serial.println("Dispensing Red Panadol...");
-        delay(3000);
+        red.write(180);
+        delay(2000);
+        red.write(90);
       }
       if (medicines[user][2]) {
         Serial.println("Dispensing Green Panadol...");
-        delay(3000);
+        green.write(180);
+        delay(2000);
+        green.write(90);
       }
       if (medicines[user][3]) {
         Serial.println("Dispensing Yellow Panadol...");
-        delay(3000);
+        yellow.write(180);
+        delay(2000);
+        yellow.write(180);
       }
     } else {
       Serial.println("User is not in database!");
